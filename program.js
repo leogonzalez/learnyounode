@@ -1,7 +1,9 @@
+var fs = require('fs');
 
-var total = 0;
+var novo =fs.readFileSync(process.argv[2])
+// var novo = fs.readFileSync(process.argv[2], "utf8").split('\n').length -1
 
-for (var t = 2; t<process.argv.length; t++){
-	total +=+process.argv[t];
-}
-console.log(total);
+var arr = novo.toString().split("\n");
+
+console.log(arr.length-1);
+
