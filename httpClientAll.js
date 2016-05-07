@@ -1,10 +1,21 @@
 //node httpClient.js http://api.twitch.tv/kraken?callback=
 var http = require('http');
+dados = "";
 
 http.get(process.argv[2],function(response){
-	//response.setEncoding('utf8');
-	console.log(response.event);
-	//response.on('data',console.log);
+
+	
+	response.on('data', function(chunk){
+	
+		dados +=chunk;
+			
+	});
+	
+	response.on('end', function(){
+		console.log(dados.length);	
+		console.log(dados);	
+	});
+
 });
 
 /* NODE SCHOOL SOLUTION
@@ -31,4 +42,14 @@ http.get(process.argv[2],function(response){
 
 	);
 })
+
+function(chunk){
+		dados += chunk;
+	}
+
+
+
+	response.on('end', console.log(dados));
+
+
 */
