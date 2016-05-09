@@ -4,22 +4,38 @@ var map = require('through2-map');
 var url = require('url');
 
 var server = http.createServer(function(req,res){
-	if (req.method != "POST") {
-		return res.end("Send me a POST...\n")
+	if (req.method != "GET") {
+		return res.end("Send me a GET...\n");
 	}
 
-	if(req.url == "/unixtime"){
-		// hendles unix time and transforms in Json
-		req.pipe(map(function(chunk){
-			
-			return chunk.url.;
-		})).pipe(res);
+	var reqPath = url.parse(req.url);
+	var hr = reqPath.query.slice(15,17);
+	var mn = reqPath.query.slice(18,20);
+	var sc = reqPath.query.slice(21,23);
 
-	} else { 
+	var hr = reqPath.query.slice(15,17);
+	var mn = reqPath.query.slice(18,20);
+	var sc = reqPath.query.slice(21,23);
 
-		req.pipe(map(function(chunk){
-		return chunk.url.;
-		})).pipe(res);
+
+	res.writeHead(200, { 'Content-Type': 'application/json' });
+
+	if(reqPath.pathname == "/api/parsetime"){
+		
+		var hr = Number(reqPath.query.slice(15,17));
+		var mn = Number(reqPath.query.slice(18,20));
+		var sc = Number(reqPath.query.slice(21,23));
+		
+		res.write("{\"hour\":" + hr + ", \"minute\":" + mn + ", \"second\":" + sc + "}");
+		res.end();
+
+
+	} else if (reqPath.pathname == "/api/unixtime"){ 
+		
+		var data = Date.parse(reqPath.query.slice(4));
+		
+		res.write("{\"unixtime\":" + data + "}");
+		res.end();
 
 	}
 
